@@ -1,4 +1,1 @@
-tis-merge-algos
-===============
-
-TISMergeAlgos
+Project for algorithms for various JOIN and MERGE operations.
