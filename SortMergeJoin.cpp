@@ -1,4 +1,7 @@
 #include "SortMergeJoin.h"
+#include <iostream>
+
+using namespace std;
 
 void sort_relation(Relation<Tuple> & input_relation, Relation<Tuple> & output_relation){
     
@@ -22,5 +25,5 @@ void SortMergeJoin::process(Relation<Tuple> & relation1, Relation<Tuple> & relat
     Relation<Tuple> sorted_relation2(relation2.length());
 
     sorted_relation1 = relation1.getSorted();
-
+    cout << endl << "Length of Relation is : " << sorted_relation1.length() << endl;
 }

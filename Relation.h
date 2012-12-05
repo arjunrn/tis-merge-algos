@@ -25,7 +25,7 @@
 #include <cstring>
 #include <cstdlib>
 #include <stdlib.h>
-
+#include <iostream>
 
 using namespace std;
 
@@ -52,6 +52,7 @@ private:
 public:
 	/** @short the default constructor */
 	Relation(unsigned max_length);
+	Relation(unsigned max_legnth, Row* rows, unsigned len);
 	
 	/** @short the default destructor */
 	~Relation();
@@ -69,15 +70,16 @@ public:
 	unsigned length() const;
 
 	static int rowCompare(const void* a, const void* b){
-    Row rowA = *((Row*)a);
-    Row rowB = *((Row*)b);
+	    Row rowA = *((Row*)a);
+	    Row rowB = *((Row*)b);
 
-    if (rowA.id < rowB.id)
-        return -1;
-    if (rowA.id == rowB.id)
-        return 0;
-    return 1;
-}
+	    if (rowA.id < rowB.id)
+	        return -1;
+	    if (rowA.id == rowB.id)
+	        return 0;
+	    return 1;
+	}
+    
     Relation getSorted();
 
 };
@@ -87,6 +89,13 @@ Relation<Row>::Relation(unsigned max_length) : mMaxLength(max_length) {
 	mpRows = new Row[max_length];
 	mLength = 0;
 }
+
+template <class Row>
+Relation<Row>::Relation(unsigned max_length,Row* rows, unsigned len) : mMaxLength(max_length) {
+	mpRows = rows;
+	mLength = len;
+}
+
 
 template <class Row>
 Relation<Row>::~Relation() {
@@ -122,19 +131,17 @@ bool Relation<Row>::append(Row & row) {
 template<class Row>
 Relation<Row> Relation<Row>::getSorted(){
     Row* dup_mpRows = new Row[mMaxLength];
-    for(int i=0 ; i < mMaxLength ; i++){
+    cout << "Now copying the Rows" << endl;
+    for(int i=0 ; i < mLength ; i++){
         memcpy(&dup_mpRows[i],&mpRows[i],sizeof(Row));
     }
     
-    int a[] = { -2, 99, 0, -743, 2, 3, 4 };
-    int size = 7;
- 
-    std::qsort(a, size, sizeof(int),rowCompare );
+    std::qsort(dup_mpRows, mMaxLength, sizeof(Row),rowCompare );
 
-
-    //std::qsort((void *)dup_mpRows, mMaxLength, sizeof(dup_mpRows[0]), compare_ints);
-
-    Relation<Row> sortedRelation(mMaxLength);
+    Relation<Row> sortedRelation(mMaxLength, dup_mpRows, mLength);
+    for(int i=0 ; i < sortedRelation.length() ; i++){
+    	cout << sortedRelation[i].id << " " << sortedRelation[i].value << endl ;
+    }
     return sortedRelation;
 }
 
