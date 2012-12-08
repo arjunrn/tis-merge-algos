@@ -1,5 +1,6 @@
 #include "SortMergeJoin.h"
 #include <iostream>
+#define DEBUG true
 
 using namespace std;
 
@@ -21,9 +22,17 @@ SortMergeJoin::~SortMergeJoin() {
 }
 
 void SortMergeJoin::process(Relation<Tuple> & relation1, Relation<Tuple> & relation2, Relation<Triple> & output_relation) {
-	Relation<Tuple> sorted_relation1(relation1.length());
-    Relation<Tuple> sorted_relation2(relation2.length());
+	Relation<Tuple> * sorted_relation1;
+    Relation<Tuple> * sorted_relation2;
 
     sorted_relation1 = relation1.getSorted();
-    cout << endl << "Length of Relation is : " << sorted_relation1.length() << endl;
+    sorted_relation2 = relation2.getSorted();
+
+
+    #ifdef DEBUG
+    sorted_relation1->print();
+    sorted_relation2->print();
+    cout << endl << "Length of Relation 1 is : " << sorted_relation1->length() << endl;
+    cout << "Length of Relation 2 is : " << sorted_relation2->length() << endl;
+    #endif
 }

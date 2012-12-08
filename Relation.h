@@ -26,6 +26,7 @@
 #include <cstdlib>
 #include <stdlib.h>
 #include <iostream>
+#define DEBUG true
 
 using namespace std;
 
@@ -80,7 +81,8 @@ public:
 	    return 1;
 	}
     
-    Relation getSorted();
+    Relation<Row>* getSorted();
+	void print();
 
 };
 
@@ -99,6 +101,9 @@ Relation<Row>::Relation(unsigned max_length,Row* rows, unsigned len) : mMaxLengt
 
 template <class Row>
 Relation<Row>::~Relation() {
+	#ifdef DEBUG
+	cout << "Calling destructor for " << mpRows << endl;
+	#endif
 	delete[] mpRows;
 }
 
@@ -129,21 +134,44 @@ bool Relation<Row>::append(Row & row) {
 
 
 template<class Row>
-Relation<Row> Relation<Row>::getSorted(){
+Relation<Row>* Relation<Row>::getSorted(){
     Row* dup_mpRows = new Row[mMaxLength];
+    
+    #ifdef DEBUG
+    cout << endl << "Address is " << dup_mpRows << endl;
     cout << "Now copying the Rows" << endl;
+    #endif
+
     for(int i=0 ; i < mLength ; i++){
         memcpy(&dup_mpRows[i],&mpRows[i],sizeof(Row));
     }
     
-    std::qsort(dup_mpRows, mMaxLength, sizeof(Row),rowCompare );
+    #ifdef DEBUG
+    cout << endl << "Done copying the Rows";
+    #endif
 
-    Relation<Row> sortedRelation(mMaxLength, dup_mpRows, mLength);
-    for(int i=0 ; i < sortedRelation.length() ; i++){
-    	cout << sortedRelation[i].id << " " << sortedRelation[i].value << endl ;
-    }
-    return sortedRelation;
+    std::qsort(dup_mpRows, mMaxLength, sizeof(Row),rowCompare );
+    
+    #ifdef DEBUG
+    cout << endl << "Done sorting the Rows";
+    #endif
+
+    return new Relation<Row>(mMaxLength, dup_mpRows, mLength);
+    /*
+    #ifdef DEBUG
+    cout << endl << "Done instantiating the new Sorted Relation : " << sortedRelation;
+    #endif
+
+    #ifdef DEBUG
+    cout << endl << "Sorted Relation has the address : " << sortedRelation;
+    #endif*/
 }
 
+template<class Row>
+void Relation<Row>::print(){
+	for(int i=0 ; i < mLength ; i++){
+    	cout << mpRows[i].id << " " << mpRows[i].value << endl ;
+    }
+}
 
 #endif
