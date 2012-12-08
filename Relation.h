@@ -60,7 +60,7 @@ public:
 	
 	/** @return the 'i'-th tuple of the relation */
 	Row & operator[](unsigned i);
-	
+	int get(unsigned i);
 	/** 
 	 * @short appends a tuple at the end of the relation 
 	 * @return true if the operation was successful
@@ -114,6 +114,12 @@ Row & Relation<Row>::operator[](unsigned i) {
 }
 
 template <class Row>
+int Relation<Row>::get(unsigned i){
+    assert(i < mLength);
+    return mpRows[i].id;
+}
+
+template <class Row>
 unsigned Relation<Row>::length() const {
 	return mLength;
 }
@@ -129,8 +135,6 @@ bool Relation<Row>::append(Row & row) {
 		return false;
 	}
 }
-
-
 
 
 template<class Row>
