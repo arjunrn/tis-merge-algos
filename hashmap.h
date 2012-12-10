@@ -1,9 +1,11 @@
 
 
 class ValueNode{
+private:
     unsigned value;
     ValueNode * next;
 
+public:
     ValueNode(unsigned v){
         value = v;
         next = NULL;
@@ -22,4 +24,12 @@ class ValueNode{
         }
     }
 
-}
+    void setNext(ValueNode * n){
+        next = n;
+    }
+
+    ValueNode * getNext(){
+        return next;
+    }
+
+};
