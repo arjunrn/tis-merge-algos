@@ -1,6 +1,6 @@
 #include "SortMergeJoin.h"
 #include <iostream>
-#define DEBUG true
+#include "debug.h"
 
 using namespace std;
 

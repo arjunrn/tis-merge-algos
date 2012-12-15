@@ -1,5 +1,7 @@
 #include "HashGroup.h"
 #include "hashmap.h"
+#define HASH_MAP_SIZE 10
+
 
 HashGroup::HashGroup() {
 	//
@@ -17,47 +19,35 @@ void HashGroup::group_sum(Relation<Tuple> & input_relation, Relation<Tuple> & ou
 	
 	Relation<Tuple> * shorter_relation = & input_relation;
 
-	int largest_value = 0;
+	
     for(int i=0 ; i < shorter_relation->length() ; i ++){
-        if(shorter_relation->get(i) > largest_value){
-            largest_value = shorter_relation->get(i);
-        }
+        
     }
 
-    cout << endl << "The largest value is " << largest_value << endl;
+    HashMap * relMap = new HashMap(HASH_MAP_SIZE);
 
-    ValueNode ** nodell = new ValueNode*[largest_value + 1];
-    for(int i=0 ; i < largest_value + 1 ; i++){
-        nodell[i] = NULL;
-    }
-
-    cout << "Now Building the Linked List" << endl;
-
+    unsigned largest_value = 0;
     for(int i = 0 ; i < shorter_relation->length() ; i++){
         unsigned key = shorter_relation->get(i);
         //cout << "Key is :" << key << endl;
         unsigned value = shorter_relation->getValue(i);
         //cout << "Value is :" << value << endl;
-        
-        ValueNode * node = new ValueNode(value);
-        if(nodell[key] == NULL){
-            //cout << "No value yet for key=" << key << endl;
-            nodell[key] = node;
-        }
-        else{
-            ValueNode * tempNode = nodell[key];
-            while(tempNode->hasNext() != NULL){
-                tempNode = tempNode->getNext();
-            }
-            //cout << "Value already exists for key=" << key << endl;
-            tempNode->setNext(node);
+        relMap->putPair(key, value);
+
+        if(shorter_relation->get(i) > largest_value){
+            largest_value = shorter_relation->get(i);
         }
     }
 
+    #ifdef DEBUG
+    cout << endl << "The largest value is " << largest_value << endl;
+    #endif
+    
     for(int i=0 ; i <= largest_value ; i++){
-    	if(nodell[i] != NULL){
+    	ValueNode * returnList = relMap->getValues(i);
+        if(returnList != NULL){
     		unsigned value_sum = 0;
-    		ValueNode * tempNode = nodell[i];
+    		ValueNode * tempNode = returnList;
     		while(tempNode != NULL){
     			value_sum += tempNode->getValue();
     			tempNode = tempNode->getNext();
@@ -68,5 +58,4 @@ void HashGroup::group_sum(Relation<Tuple> & input_relation, Relation<Tuple> & ou
     		output_relation.append(newTuple);
     	}
     }
-
 }

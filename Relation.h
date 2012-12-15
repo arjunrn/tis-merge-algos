@@ -26,7 +26,7 @@
 #include <cstdlib>
 #include <stdlib.h>
 #include <iostream>
-#define DEBUG true
+#include "debug.h"
 
 using namespace std;
 
