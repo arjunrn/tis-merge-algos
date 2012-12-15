@@ -19,6 +19,19 @@ public:
 	* @short perform the join on the two input relations
 	*/
 	void process(Relation<Tuple> & relation1, Relation<Tuple> & relation2, Relation<Triple> & output_relation);
+    
+    static void* startSort1(void* rel){
+        cout << "In Sort Function 1: " << endl;
+        Relation<Tuple> * relation = (Relation<Tuple>*)rel;
+        return relation->getSorted();
+    }
+
+    static void* startSort2(void* rel){
+        cout << "In Sort Function 2: " << endl;
+        Relation<Tuple> * relation = (Relation<Tuple>*)rel;
+        return relation->getSorted();
+    }
+
 };
 
 #endif // SORTMERGEJOIN_H

@@ -1,6 +1,7 @@
 #include "SortMergeJoin.h"
 #include <iostream>
 #include "debug.h"
+#include <pthread.h>
 
 using namespace std;
 
@@ -25,10 +26,26 @@ void SortMergeJoin::process(Relation<Tuple> & relation1, Relation<Tuple> & relat
 	Relation<Tuple> * sorted_relation1;
     Relation<Tuple> * sorted_relation2;
 
-    sorted_relation1 = relation1.getSorted();
-    sorted_relation2 = relation2.getSorted();
+    pthread_t t1 = (pthread_t)1;
+    pthread_t t2 = (pthread_t)2;
+    int *t1_int = (int*)malloc(sizeof(int));
+    int *t2_int = (int*)malloc(sizeof(int));
+    *t1_int = 11;
+    *t2_int = 22;
+    int threadReturnCode1 = pthread_create(&t1, NULL, startSort1, &relation1);
+    int threadReturnCode2 = pthread_create(&t2, NULL, startSort2, &relation2);
 
+    Relation<Tuple> *t1_result;
+    Relation<Tuple> *t2_result;
+
+    int joinResult1 = pthread_join(t1, (void**)&sorted_relation1);
+    int joinResult2 = pthread_join(t2, (void**)&sorted_relation2);
+
+    
     #ifdef DEBUG
+    cout << "Result of Join 1 " << joinResult1 << endl;
+    cout << "Result of Join 2 " << joinResult2 << endl;
+
     sorted_relation1->print();
     sorted_relation2->print();
     cout << endl << "Length of Relation 1 is : " << sorted_relation1->length() << endl;

@@ -7,9 +7,11 @@ add_definitions("-O3")
 ADD_EXECUTABLE ( nested_loop_join.o join_main.cpp NestedLoopJoin.cpp )
 ADD_EXECUTABLE ( hash_join.o join_main.cpp HashJoin.cpp )
 ADD_EXECUTABLE ( sort_merge_join.o join_main.cpp SortMergeJoin.cpp )
+ADD_EXECUTABLE ( sort_merge_join_p.o join_main.cpp SortMergeJoinParallelized.cpp )
 SET_TARGET_PROPERTIES(nested_loop_join.o PROPERTIES COMPILE_FLAGS "-DNESTEDLOOPJOIN")
 SET_TARGET_PROPERTIES(hash_join.o PROPERTIES COMPILE_FLAGS "-DHASHJOIN")
 SET_TARGET_PROPERTIES(sort_merge_join.o PROPERTIES COMPILE_FLAGS "-DSORTMERGEJOIN")
+SET_TARGET_PROPERTIES(sort_merge_join_p.o PROPERTIES COMPILE_FLAGS "-DSORTMERGEJOIN")
 
 # the group operators
 ADD_EXECUTABLE ( nested_loop_group.o group_main.cpp NestedLoopGroup.cpp )
